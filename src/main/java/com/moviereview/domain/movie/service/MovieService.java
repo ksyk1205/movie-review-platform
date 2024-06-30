@@ -28,6 +28,4 @@ public class MovieService {
 
     return MovieCreateResponse.builder().id(movie.getId()).build();
   }
-
-
 }
