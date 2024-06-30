@@ -16,12 +16,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-@AutoConfigureDataMongo
-@SpringBootTest(
-    properties = "de.flapdoodle.mongodb.embedded.version=5.0.5",
-    webEnvironment = WebEnvironment.RANDOM_PORT
-)
-@EnableAutoConfiguration
+
+@AcceptanceTest
 @DisplayName("영화 기능 인수 테스트")
 class MovieAcceptanceTest {
 

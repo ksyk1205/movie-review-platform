@@ -31,15 +31,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.3'
-	testImplementation 'org.projectlombok:lombok:1.18.22'// 원하는 버전으로 설정하세요
-
+	testImplementation 'org.projectlombok:lombok:1.18.22'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x:4.6.2'
+	testImplementation 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'io.rest-assured:rest-assured:5.4.0'
 }
 
 tasks.named('test') {
