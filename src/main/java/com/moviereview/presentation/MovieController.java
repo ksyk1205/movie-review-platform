@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/movie")
 @RequiredArgsConstructor
 public class MovieController {
+
   private final MovieService movieService;
 
   @PostMapping
