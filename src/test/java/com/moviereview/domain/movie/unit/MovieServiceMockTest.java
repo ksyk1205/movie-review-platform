@@ -47,6 +47,6 @@ public class MovieServiceMockTest {
     MovieCreateResponse movieCreateResponse = movieService.addMovie(movieCreateRequest);
 
     //then
-    assertThat(movieCreateResponse.getId()).isEqualTo(movie.getId());
+    assertThat(movieCreateResponse.id()).isEqualTo(movie.getId());
   }
 }
