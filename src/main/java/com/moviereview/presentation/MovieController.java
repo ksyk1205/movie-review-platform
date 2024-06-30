@@ -3,6 +3,7 @@ package com.moviereview.presentation;
 import com.moviereview.application.dto.MovieCreateRequest;
 import com.moviereview.application.dto.MovieCreateResponse;
 import com.moviereview.domain.movie.service.MovieService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class MovieController {
   private final MovieService movieService;
 
   @PostMapping
-  public ResponseEntity<MovieCreateResponse> addMovie(@RequestBody MovieCreateRequest movie) {
+  public ResponseEntity<MovieCreateResponse> addMovie(@Valid @RequestBody MovieCreateRequest movie) {
     return ResponseEntity.ok(movieService.addMovie(movie));
   }
 }
