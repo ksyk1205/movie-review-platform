@@ -3,11 +3,7 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      uri: "mongodb://localhost:27017"
       database: movie
-
-  datasource:
-    url: none
 
   jackson:
     property-naming-strategy: SNAKE_CASE
