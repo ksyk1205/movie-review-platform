@@ -2,10 +2,13 @@ package com.moviereview.presentation;
 
 import com.moviereview.application.dto.MovieCreateRequest;
 import com.moviereview.application.dto.MovieCreateResponse;
+import com.moviereview.application.dto.MovieListResponse;
 import com.moviereview.domain.movie.service.MovieService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,5 +24,10 @@ public class MovieController {
   @PostMapping
   public ResponseEntity<MovieCreateResponse> addMovie(@Valid @RequestBody MovieCreateRequest movie) {
     return ResponseEntity.ok(movieService.addMovie(movie));
+  }
+
+  @GetMapping
+  public ResponseEntity<List<MovieListResponse>> getList() {
+    return ResponseEntity.ok(movieService.getList());
   }
 }

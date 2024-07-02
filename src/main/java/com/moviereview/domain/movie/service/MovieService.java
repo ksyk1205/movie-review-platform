@@ -2,9 +2,12 @@ package com.moviereview.domain.movie.service;
 
 import com.moviereview.application.dto.MovieCreateRequest;
 import com.moviereview.application.dto.MovieCreateResponse;
+import com.moviereview.application.dto.MovieListResponse;
 import com.moviereview.domain.movie.model.Genre;
 import com.moviereview.domain.movie.model.Movie;
 import com.moviereview.domain.movie.repository.MovieRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,5 +30,17 @@ public class MovieService {
         .build());
 
     return MovieCreateResponse.builder().id(movie.getId()).build();
+  }
+
+  public List<MovieListResponse> getList() {
+    return movieRepository.findAll().stream().map(movie ->
+        MovieListResponse.builder()
+            .id(movie.getId())
+            .title(movie.getTitle())
+            .genre(movie.getGenre().toString())
+            .actors(movie.getActors())
+            .releaseDate(movie.getReleaseDate())
+            .createdAt(movie.getCreatedAt())
+        .build()).collect(Collectors.toList());
   }
 }
