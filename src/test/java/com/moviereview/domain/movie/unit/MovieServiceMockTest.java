@@ -1,6 +1,7 @@
 package com.moviereview.domain.movie.unit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -8,6 +9,7 @@ import static org.mockito.Mockito.when;
 import com.moviereview.application.dto.MovieCreateRequest;
 import com.moviereview.application.dto.MovieCreateResponse;
 import com.moviereview.application.dto.MovieListResponse;
+import com.moviereview.common.exception.BadRequestException;
 import com.moviereview.domain.movie.fixture.MovieFixture;
 import com.moviereview.domain.movie.model.Genre;
 import com.moviereview.domain.movie.model.Movie;
@@ -67,5 +69,14 @@ public class MovieServiceMockTest {
         () -> assertThat(list.get(0).title()).isEqualTo(movie.getTitle()),
         () -> assertThat(list.get(0).releaseDate()).isEqualTo(movie.getReleaseDate())
     );
+  }
+
+  @Test
+  @DisplayName("영화 삭제할때 특정 아이디의 리소스가 존재하지 않는다.")
+  void removeMovieTest() {
+
+    assertThatThrownBy(() -> movieService.removeMovie("movie_id_test"))
+        .isInstanceOf(BadRequestException.class);
+
   }
 }
