@@ -3,6 +3,8 @@ package com.moviereview.domain.movie.service;
 import com.moviereview.application.dto.MovieCreateRequest;
 import com.moviereview.application.dto.MovieCreateResponse;
 import com.moviereview.application.dto.MovieListResponse;
+import com.moviereview.common.exception.BadRequestException;
+import com.moviereview.common.exception.ErrorCode;
 import com.moviereview.domain.movie.model.Genre;
 import com.moviereview.domain.movie.model.Movie;
 import com.moviereview.domain.movie.repository.MovieRepository;
@@ -41,6 +43,13 @@ public class MovieService {
             .actors(movie.getActors())
             .releaseDate(movie.getReleaseDate())
             .createdAt(movie.getCreatedAt())
-        .build()).collect(Collectors.toList());
+            .build()).collect(Collectors.toList());
+  }
+
+  public void removeMovie(String id) {
+    movieRepository.findById(id).orElseThrow(
+        () -> new BadRequestException(ErrorCode.BAD_REQUEST_EXCEPTION, "movie resource not found"));
+
+    movieRepository.deleteById(id);
   }
 }
