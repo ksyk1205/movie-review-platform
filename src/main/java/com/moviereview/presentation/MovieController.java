@@ -2,7 +2,8 @@ package com.moviereview.presentation;
 
 import com.moviereview.application.dto.MovieCreateRequest;
 import com.moviereview.application.dto.MovieCreateResponse;
-import com.moviereview.application.dto.MovieListResponse;
+import com.moviereview.application.dto.MovieSearchResponse;
+import com.moviereview.application.dto.MovieUpdateRequest;
 import com.moviereview.domain.movie.service.MovieService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,8 +31,14 @@ public class MovieController {
     return ResponseEntity.ok(movieService.addMovie(movie));
   }
 
+  @PatchMapping("/{id}")
+  public ResponseEntity<MovieSearchResponse> updateMovie(
+      @PathVariable String id, @RequestBody MovieUpdateRequest movie) {
+    return ResponseEntity.ok(movieService.updateMovie(id, movie));
+  }
+
   @GetMapping
-  public ResponseEntity<List<MovieListResponse>> getList() {
+  public ResponseEntity<List<MovieSearchResponse>> getList() {
     return ResponseEntity.ok(movieService.getList());
   }
 
