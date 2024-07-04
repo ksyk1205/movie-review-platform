@@ -30,4 +30,31 @@ public class MovieSteps {
         .statusCode(HttpStatus.OK.value()).extract();
   }
 
+  public static ExtractableResponse<Response> 영화_수정_요청(String id, String title) {
+    Map<String, Object> params = new HashMap<>();
+    params.put("title", title);
+
+    return RestAssured.given().log().all()
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .body(params)
+        .when().patch("/v1/movie/" + id)
+        .then().log().all()
+        .statusCode(HttpStatus.OK.value()).extract();
+  }
+
+  public static ExtractableResponse<Response> 영화_리스트_조회_요청() {
+    return RestAssured.given().log().all()
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .when().get("/v1/movie")
+        .then().log().all()
+        .statusCode(HttpStatus.OK.value()).extract();
+  }
+
+  public static ExtractableResponse<Response> 영화_삭제_요청(String id) {
+    return RestAssured.given().log().all()
+        .when().delete("/v1/movie/" + id)
+        .then().log().all()
+        .extract();
+  }
+
 }

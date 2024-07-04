@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Getter
 @Document(collection = "movies")
 public class Movie {
+
   @Id
   private String id;
   private String title;
@@ -40,5 +41,25 @@ public class Movie {
     this.releaseDate = releaseDate;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+  }
+
+  public void updateTitle(String title) {
+    this.title = title;
+  }
+
+  public void updateDirector(String director) {
+    this.director = director;
+  }
+
+  public void updateReleaseDate(LocalDate releaseDate) {
+    this.releaseDate = releaseDate;
+  }
+
+  public void updateActors(List<String> actors) {
+    this.actors = actors;
+  }
+
+  public void updateGenre(Genre genre) {
+    this.genre =genre;
   }
 }
