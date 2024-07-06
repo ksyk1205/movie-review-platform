@@ -1,21 +1,30 @@
 package com.moviereview.common.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.moviereview.common.MyCustomTestExecutionListener;
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest(
     properties = "de.flapdoodle.mongodb.embedded.version=5.0.5",
     webEnvironment = WebEnvironment.RANDOM_PORT
 )
 @AutoConfigureDataMongo
-@DirtiesContext
-public @interface AcceptanceTest {
+@TestExecutionListeners({
+    MyCustomTestExecutionListener.class,
+    DependencyInjectionTestExecutionListener.class
+})
+public abstract class AcceptanceTest {
+  @LocalServerPort
+  int port;
+
+  @BeforeEach
+  public void environmentSetUp() {
+    RestAssured.port = port;
+  }
 }

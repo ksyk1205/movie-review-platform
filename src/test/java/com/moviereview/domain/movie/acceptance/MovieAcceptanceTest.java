@@ -3,36 +3,16 @@ package com.moviereview.domain.movie.acceptance;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.moviereview.common.annotation.AcceptanceTest;
-import com.moviereview.domain.movie.model.Movie;
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
-
-@AcceptanceTest
 @DisplayName("영화 기능 인수 테스트")
-class MovieAcceptanceTest {
-
-  @LocalServerPort
-  int port;
-
-  @BeforeEach
-  public void environmentSetUp() {
-    RestAssured.port = port;
-  }
-
+class MovieAcceptanceTest extends AcceptanceTest{
   @Test
   @DisplayName("영화를 등록할 수 있다.")
   void 영화_등록_테스트() {
@@ -60,7 +40,7 @@ class MovieAcceptanceTest {
     ExtractableResponse<Response> 영화_수정_결과 = MovieSteps.영화_수정_요청(id, title);
 
     //then
-    assertThat(영화_수정_결과.jsonPath().getString("title")).equals(title);
+    assertThat(영화_수정_결과.jsonPath().getString("title")).isEqualTo(title);
   }
 
   @Test
@@ -74,7 +54,7 @@ class MovieAcceptanceTest {
     ExtractableResponse<Response> 영화_조회_결과 = MovieSteps.영화_리스트_조회_요청();
 
     // then
-    assertThat(영화_조회_결과.jsonPath().getList("title").get(0)).isEqualTo("원더랜드");
+    assertThat(영화_조회_결과.jsonPath().getList("director").get(0)).isEqualTo("김태용");
   }
 
   @Test
