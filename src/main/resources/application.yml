@@ -4,6 +4,8 @@ spring:
       host: localhost
       port: 27017
       database: movie
+      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
 
   jackson:
     property-naming-strategy: SNAKE_CASE
+

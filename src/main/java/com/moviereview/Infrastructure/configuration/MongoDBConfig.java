@@ -2,6 +2,7 @@ package com.moviereview.Infrastructure.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.convert.DbRefResolver;
 import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
@@ -17,6 +18,8 @@ public class MongoDBConfig {
       MongoMappingContext mongoMappingContext
   ) {
     DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoDatabaseFactory);
+
+    mongoMappingContext.setFieldNamingStrategy(new SnakeCaseFieldNamingStrategy());
     MappingMongoConverter converter = new MappingMongoConverter(dbRefResolver, mongoMappingContext);
     converter.setTypeMapper(new DefaultMongoTypeMapper(null));
     return converter;
