@@ -57,4 +57,12 @@ public class MovieSteps {
         .extract();
   }
 
+  public static ExtractableResponse<Response> 영화_조회_요청(String id) {
+    return RestAssured.given().log().all()
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .when().get("/v1/movie/"+id)
+        .then().log().all()
+        .statusCode(HttpStatus.OK.value()).extract();
+  }
+
 }

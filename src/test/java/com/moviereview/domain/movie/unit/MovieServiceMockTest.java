@@ -107,4 +107,21 @@ public class MovieServiceMockTest {
         .isInstanceOf(BadRequestException.class);
 
   }
+
+  @Test
+  @DisplayName("영화를 조회한다.")
+  void getMovieTest() {
+    //given
+    Movie movie = MovieFixture.WONDERLAND.createMovie();
+    when(movieRepository.findById(any())).thenReturn(Optional.ofNullable(movie));
+
+    //when
+    MovieSearchResponse movieSearchResponse = movieService.getMovie(movie.getId());
+
+    assertAll(
+        () -> assertThat(movieSearchResponse.title()).isEqualTo(movie.getTitle()),
+        () -> assertThat(movieSearchResponse.releaseDate()).isEqualTo(movie.getReleaseDate())
+    );
+
+  }
 }

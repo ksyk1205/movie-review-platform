@@ -71,4 +71,21 @@ class MovieAcceptanceTest extends AcceptanceTest{
     //then
     assertThat(영화_삭제_결과.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
   }
+
+  @Test
+  @DisplayName("영화 조회할 수 있다.")
+  void 영화_조회_테스트() {
+    //given
+    String title = "원더랜드";
+    ExtractableResponse<Response> 영화_생성_결과 = MovieSteps.영화_생성_요청(title, "김태용",
+        LocalDate.of(2024, 06, 30), List.of("탕웨이", "수지", "박보검"), "DRAMA");
+    String id = 영화_생성_결과.jsonPath().get("id");
+
+    //when
+    ExtractableResponse<Response> 영화_조회_결과 = MovieSteps.영화_조회_요청(id);
+
+    //then
+    assertThat(영화_조회_결과.statusCode()).isEqualTo(HttpStatus.OK.value());
+    assertThat(영화_조회_결과.jsonPath().getString("title")).isEqualTo(title);
+  }
 }
