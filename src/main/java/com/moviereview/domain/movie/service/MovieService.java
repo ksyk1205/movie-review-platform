@@ -47,27 +47,12 @@ public class MovieService {
 
     Movie updatedMovie = movieRepository.save(movie);
 
-    return MovieSearchResponse.builder()
-        .id(updatedMovie.getId())
-        .title(updatedMovie.getTitle())
-        .director(updatedMovie.getDirector())
-        .releaseDate(updatedMovie.getReleaseDate())
-        .actors(updatedMovie.getActors())
-        .genre(updatedMovie.getGenre().toString())
-        .build();
+    return MovieSearchResponse.from(updatedMovie);
   }
 
   public List<MovieSearchResponse> getList() {
     return movieRepository.findAll().stream().map(movie ->
-        MovieSearchResponse.builder()
-            .id(movie.getId())
-            .title(movie.getTitle())
-            .director(movie.getDirector())
-            .genre(movie.getGenre().toString())
-            .actors(movie.getActors())
-            .releaseDate(movie.getReleaseDate())
-            .createdAt(movie.getCreatedAt())
-            .build()).collect(Collectors.toList());
+        MovieSearchResponse.from(movie)).collect(Collectors.toList());
   }
 
   @Transactional
@@ -76,9 +61,13 @@ public class MovieService {
     movieRepository.deleteById(id);
   }
 
+  public MovieSearchResponse getMovie(String id) {
+    Movie movie = findById(id);
+    return MovieSearchResponse.from(movie);
+  }
+
   private Movie findById(String id) {
     return movieRepository.findById(id).orElseThrow(
         () -> new BadRequestException(ErrorCode.BAD_REQUEST_EXCEPTION, "movie resource not found"));
-
   }
 }

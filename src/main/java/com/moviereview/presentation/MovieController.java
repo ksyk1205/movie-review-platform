@@ -47,4 +47,9 @@ public class MovieController {
     movieService.removeMovie(id);
     return ResponseEntity.noContent().build();
   }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<MovieSearchResponse> getMovie(@PathVariable String id) {
+    return ResponseEntity.ok(movieService.getMovie(id));
+  }
 }
