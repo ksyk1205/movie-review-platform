@@ -22,8 +22,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/movie")
 @RequiredArgsConstructor
 public class MovieController {
-
   private final MovieService movieService;
+
+  @GetMapping
+  public ResponseEntity<List<MovieSearchResponse>> getList() {
+    return ResponseEntity.ok(movieService.getList());
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<MovieSearchResponse> getMovie(@PathVariable String id) {
+    return ResponseEntity.ok(movieService.getMovie(id));
+  }
 
   @PostMapping
   public ResponseEntity<MovieCreateResponse> addMovie(
@@ -37,19 +46,10 @@ public class MovieController {
     return ResponseEntity.ok(movieService.updateMovie(id, movie));
   }
 
-  @GetMapping
-  public ResponseEntity<List<MovieSearchResponse>> getList() {
-    return ResponseEntity.ok(movieService.getList());
-  }
-
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> removeMovie(@PathVariable String id) {
     movieService.removeMovie(id);
     return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<MovieSearchResponse> getMovie(@PathVariable String id) {
-    return ResponseEntity.ok(movieService.getMovie(id));
-  }
 }

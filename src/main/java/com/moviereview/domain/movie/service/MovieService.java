@@ -22,6 +22,15 @@ public class MovieService {
 
   private final MovieRepository movieRepository;
 
+  public List<MovieSearchResponse> getList() {
+    return movieRepository.findAll().stream().map(movie ->
+        MovieSearchResponse.from(movie)).collect(Collectors.toList());
+  }
+  public MovieSearchResponse getMovie(String id) {
+    Movie movie = findById(id);
+    return MovieSearchResponse.from(movie);
+  }
+
   @Transactional
   public MovieCreateResponse addMovie(MovieCreateRequest movieCreateRequest) {
     Movie movie = movieRepository.save(Movie.builder()
@@ -50,20 +59,10 @@ public class MovieService {
     return MovieSearchResponse.from(updatedMovie);
   }
 
-  public List<MovieSearchResponse> getList() {
-    return movieRepository.findAll().stream().map(movie ->
-        MovieSearchResponse.from(movie)).collect(Collectors.toList());
-  }
-
   @Transactional
   public void removeMovie(String id) {
     findById(id);
     movieRepository.deleteById(id);
-  }
-
-  public MovieSearchResponse getMovie(String id) {
-    Movie movie = findById(id);
-    return MovieSearchResponse.from(movie);
   }
 
   private Movie findById(String id) {
