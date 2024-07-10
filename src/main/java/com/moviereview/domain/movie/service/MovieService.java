@@ -31,6 +31,11 @@ public class MovieService {
     return MovieSearchResponse.from(movie);
   }
 
+  public List<MovieSearchResponse> searchMovie(String keyword) {
+    return movieRepository.searchByTitleOrDirectorOrActors(keyword).stream().map(movie ->
+        MovieSearchResponse.from(movie)).collect(Collectors.toList());
+  }
+
   @Transactional
   public MovieCreateResponse addMovie(MovieCreateRequest movieCreateRequest) {
     Movie movie = movieRepository.save(Movie.builder()
