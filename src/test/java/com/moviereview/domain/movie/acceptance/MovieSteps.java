@@ -27,6 +27,14 @@ public class MovieSteps {
         .statusCode(HttpStatus.OK.value()).extract();
   }
 
+  public static ExtractableResponse<Response> 영화_검색어_조회_요청(String keyword) {
+    return RestAssured.given().log().all()
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .when().get("/v1/movie?keyword="+keyword)
+        .then().log().all()
+        .statusCode(HttpStatus.OK.value()).extract();
+  }
+
   public static ExtractableResponse<Response> 영화_생성_요청(String title, String director,
       LocalDate releaseDate, List<String> actors, String genre) {
 
