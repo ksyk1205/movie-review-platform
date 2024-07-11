@@ -36,6 +36,57 @@ public class MovieServiceMockTest {
   private MovieService movieService;
 
   @Test
+  @DisplayName("영화 리스트 조회 테스트")
+  void getListMovieTest() {
+    //given
+    Movie movie = MovieFixture.WONDERLAND.createMovie();
+    when(movieRepository.findAll()).thenReturn(List.of(movie));
+
+    //when
+    List<MovieSearchResponse> list = movieService.getList();
+
+    assertAll(
+        () -> assertThat(list.size()).isEqualTo(1),
+        () -> assertThat(list.get(0).title()).isEqualTo(movie.getTitle()),
+        () -> assertThat(list.get(0).releaseDate()).isEqualTo(movie.getReleaseDate())
+    );
+  }
+
+  @Test
+  @DisplayName("영화를 조회한다.")
+  void getMovieTest() {
+    //given
+    Movie movie = MovieFixture.WONDERLAND.createMovie();
+    when(movieRepository.findById(any())).thenReturn(Optional.ofNullable(movie));
+
+    //when
+    MovieSearchResponse movieSearchResponse = movieService.getMovie(movie.getId());
+
+    assertAll(
+        () -> assertThat(movieSearchResponse.title()).isEqualTo(movie.getTitle()),
+        () -> assertThat(movieSearchResponse.releaseDate()).isEqualTo(movie.getReleaseDate())
+    );
+
+  }
+
+  @Test
+  @DisplayName("영화를 조회한다.")
+  void searchMovie() {
+    //given
+    Movie movie = MovieFixture.WONDERLAND.createMovie();
+    when(movieRepository.searchByTitleOrDirectorOrActors(any())).thenReturn(List.of(movie));
+
+    //when
+    List<MovieSearchResponse> movieSearchResponses = movieService.searchMovie(movie.getTitle());
+
+    assertAll(
+        () -> assertThat(movieSearchResponses.get(0).title()).isEqualTo(movie.getTitle()),
+        () -> assertThat(movieSearchResponses.get(0).releaseDate()).isEqualTo(movie.getReleaseDate())
+    );
+
+  }
+
+  @Test
   @DisplayName("영화 등록 테스트 ")
   void addMovieTest() {
     //given
@@ -80,23 +131,6 @@ public class MovieServiceMockTest {
 
     //then
     assertThat(movieSearchResponse.director()).isEqualTo(movie.getDirector());
-  }
-
-  @Test
-  @DisplayName("영화 리스트 조회 테스트")
-  void getListMovieTest() {
-    //given
-    Movie movie = MovieFixture.WONDERLAND.createMovie();
-    when(movieRepository.findAll()).thenReturn(List.of(movie));
-
-    //when
-    List<MovieSearchResponse> list = movieService.getList();
-
-    assertAll(
-        () -> assertThat(list.size()).isEqualTo(1),
-        () -> assertThat(list.get(0).title()).isEqualTo(movie.getTitle()),
-        () -> assertThat(list.get(0).releaseDate()).isEqualTo(movie.getReleaseDate())
-    );
   }
 
   @Test

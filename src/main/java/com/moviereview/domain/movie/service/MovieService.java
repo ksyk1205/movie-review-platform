@@ -22,6 +22,20 @@ public class MovieService {
 
   private final MovieRepository movieRepository;
 
+  public List<MovieSearchResponse> getList() {
+    return movieRepository.findAll().stream().map(movie ->
+        MovieSearchResponse.from(movie)).collect(Collectors.toList());
+  }
+  public MovieSearchResponse getMovie(String id) {
+    Movie movie = findById(id);
+    return MovieSearchResponse.from(movie);
+  }
+
+  public List<MovieSearchResponse> searchMovie(String keyword) {
+    return movieRepository.searchByTitleOrDirectorOrActors(keyword).stream().map(movie ->
+        MovieSearchResponse.from(movie)).collect(Collectors.toList());
+  }
+
   @Transactional
   public MovieCreateResponse addMovie(MovieCreateRequest movieCreateRequest) {
     Movie movie = movieRepository.save(Movie.builder()
@@ -47,27 +61,7 @@ public class MovieService {
 
     Movie updatedMovie = movieRepository.save(movie);
 
-    return MovieSearchResponse.builder()
-        .id(updatedMovie.getId())
-        .title(updatedMovie.getTitle())
-        .director(updatedMovie.getDirector())
-        .releaseDate(updatedMovie.getReleaseDate())
-        .actors(updatedMovie.getActors())
-        .genre(updatedMovie.getGenre().toString())
-        .build();
-  }
-
-  public List<MovieSearchResponse> getList() {
-    return movieRepository.findAll().stream().map(movie ->
-        MovieSearchResponse.builder()
-            .id(movie.getId())
-            .title(movie.getTitle())
-            .director(movie.getDirector())
-            .genre(movie.getGenre().toString())
-            .actors(movie.getActors())
-            .releaseDate(movie.getReleaseDate())
-            .createdAt(movie.getCreatedAt())
-            .build()).collect(Collectors.toList());
+    return MovieSearchResponse.from(updatedMovie);
   }
 
   @Transactional
@@ -79,6 +73,5 @@ public class MovieService {
   private Movie findById(String id) {
     return movieRepository.findById(id).orElseThrow(
         () -> new BadRequestException(ErrorCode.BAD_REQUEST_EXCEPTION, "movie resource not found"));
-
   }
 }
