@@ -19,6 +19,6 @@ public class ReviewSteps {
         .body(params)
         .when().post("/v1/movie/"+movieId+"/reviews")
         .then().log().all()
-        .statusCode(HttpStatus.OK.value()).extract();
+        .statusCode(HttpStatus.CREATED.value()).extract();
   }
 }
