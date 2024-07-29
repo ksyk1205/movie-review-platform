@@ -10,7 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
-@Document(collation = "reviews")
+@Document(collection = "reviews")
 @Builder
 public class Review extends BaseDocument {
   @Id
@@ -28,7 +28,7 @@ public class Review extends BaseDocument {
     private LocalDateTime timestamp;
   }
 
-  public static Review createReview(String userId, String movieId, ReviewCreateRequest request) {
+  public static Review createReview(String movieId, String userId, ReviewCreateRequest request) {
     return Review.builder()
         .userId(userId)
         .movieId(movieId)

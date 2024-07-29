@@ -4,12 +4,16 @@ import static com.moviereview.common.exception.ErrorCode.NOT_FOUND_EXCEPTION;
 import static com.moviereview.domain.review.model.Review.createReview;
 
 import com.moviereview.application.dto.ReviewCreateRequest;
+import com.moviereview.application.dto.ReviewSearchResponse;
 import com.moviereview.common.exception.BadRequestException;
 import com.moviereview.common.exception.NotFoundException;
 import com.moviereview.domain.movie.model.Movie;
 import com.moviereview.domain.movie.repository.MovieRepository;
+import com.moviereview.domain.movie.service.MovieService;
 import com.moviereview.domain.review.model.Review;
 import com.moviereview.domain.review.repository.ReviewRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,17 +22,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ReviewService {
-  private final MovieRepository movieRepository;
+
+  private final MovieService movieService;
 
   private final ReviewRepository reviewRepository;
 
   public void addReview(String movieId, String userId, ReviewCreateRequest request) {
-    Movie movie = movieRepository.findById(movieId)
-        .orElseThrow(() -> new NotFoundException(NOT_FOUND_EXCEPTION,"Movie not found with id" + movieId));
-
-
+    Movie movie = movieService.findById(movieId);
     Review review = createReview(movie.getId(), userId, request);
     reviewRepository.save(review);
   }
 
+  public List<ReviewSearchResponse> searchReview(String movieId) {
+    Movie movie = movieService.findById(movieId);
+    return reviewRepository.findAllByMovieId(movieId).stream()
+        .map(review -> ReviewSearchResponse.from(review)).collect(
+            Collectors.toList());
+  }
 }

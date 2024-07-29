@@ -5,6 +5,7 @@ import com.moviereview.application.dto.MovieCreateResponse;
 import com.moviereview.application.dto.MovieSearchResponse;
 import com.moviereview.application.dto.MovieUpdateRequest;
 import com.moviereview.application.dto.ReviewCreateRequest;
+import com.moviereview.application.dto.ReviewSearchResponse;
 import com.moviereview.domain.movie.service.MovieService;
 import com.moviereview.domain.review.service.ReviewService;
 import jakarta.validation.Valid;
@@ -64,9 +65,14 @@ public class MovieController {
 
   //TODO 사용자 정보 세팅 후 userId 변경
   @PostMapping("/{id}/reviews")
-  public ResponseEntity<?> addReview(@PathVariable String id, @RequestBody ReviewCreateRequest reviewDto) {
+  public ResponseEntity<Void> addReview(@PathVariable String id, @RequestBody ReviewCreateRequest reviewDto) {
     reviewService.addReview(id, "user1", reviewDto);
     return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @GetMapping("/{id}/reviews")
+  public ResponseEntity<List<ReviewSearchResponse>> searchResponse(@PathVariable String id) {
+    return ResponseEntity.ok(reviewService.searchReview(id));
   }
 
 }
