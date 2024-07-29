@@ -21,4 +21,12 @@ public class ReviewSteps {
         .then().log().all()
         .statusCode(HttpStatus.CREATED.value()).extract();
   }
+
+  public static ExtractableResponse<Response> 리뷰_조회_요청(String moveId) {
+    return RestAssured.given().log().all()
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .when().get("/v1/movie/"+moveId+"/reviews")
+        .then().log().all()
+        .statusCode(HttpStatus.OK.value()).extract();
+  }
 }
