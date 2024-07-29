@@ -1,5 +1,6 @@
 package com.moviereview.domain.review.service;
 
+import static com.moviereview.common.exception.ErrorCode.BAD_REQUEST_EXCEPTION;
 import static com.moviereview.common.exception.ErrorCode.NOT_FOUND_EXCEPTION;
 import static com.moviereview.domain.review.model.Review.createReview;
 
@@ -27,16 +28,26 @@ public class ReviewService {
 
   private final ReviewRepository reviewRepository;
 
-  public void addReview(String movieId, String userId, ReviewCreateRequest request) {
+  public ReviewSearchResponse addReview(String movieId, String userId, ReviewCreateRequest request) {
     Movie movie = movieService.findById(movieId);
     Review review = createReview(movie.getId(), userId, request);
-    reviewRepository.save(review);
+    Review save = reviewRepository.save(review);
+    return ReviewSearchResponse.from(save);
   }
 
   public List<ReviewSearchResponse> searchReview(String movieId) {
     Movie movie = movieService.findById(movieId);
-    return reviewRepository.findAllByMovieId(movieId).stream()
+    return reviewRepository.findAllByMovieId(movie.getId()).stream()
         .map(review -> ReviewSearchResponse.from(review)).collect(
             Collectors.toList());
+  }
+
+  public void removeReview(String movieId, String reviewId) {
+    Movie movie = movieService.findById(movieId);
+    Review review = reviewRepository.findByMovieIdAndId(movie.getId(), reviewId)
+        .orElseThrow(() -> new BadRequestException(BAD_REQUEST_EXCEPTION,
+            "Bad Request ReviewId : " + reviewId));
+
+    reviewRepository.delete(review);
   }
 }

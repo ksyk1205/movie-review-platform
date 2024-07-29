@@ -21,7 +21,7 @@ public class ReviewSteps {
         .body(params)
         .when().post("/v1/movie/" + movieId + "/reviews")
         .then().log().all()
-        .statusCode(HttpStatus.CREATED.value()).extract();
+        .statusCode(HttpStatus.OK.value()).extract();
   }
 
   public static ExtractableResponse<Response> 리뷰_조회_요청(String movieId) {

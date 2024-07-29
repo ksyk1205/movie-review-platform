@@ -65,14 +65,20 @@ public class MovieController {
 
   //TODO 사용자 정보 세팅 후 userId 변경
   @PostMapping("/{id}/reviews")
-  public ResponseEntity<Void> addReview(@PathVariable String id, @RequestBody ReviewCreateRequest reviewDto) {
-    reviewService.addReview(id, "user1", reviewDto);
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+  public ResponseEntity<ReviewSearchResponse> addReview(@PathVariable String id, @RequestBody ReviewCreateRequest reviewDto) {
+    return ResponseEntity.ok(reviewService.addReview(id, "user1", reviewDto));
   }
 
   @GetMapping("/{id}/reviews")
   public ResponseEntity<List<ReviewSearchResponse>> searchResponse(@PathVariable String id) {
     return ResponseEntity.ok(reviewService.searchReview(id));
+  }
+
+  @DeleteMapping("/{id}/reviews/{reviewId}")
+  public ResponseEntity<Void> searchResponse(@PathVariable String id, @PathVariable String reviewId) {
+    reviewService.removeReview(id, reviewId);
+    return ResponseEntity.noContent().build();
+
   }
 
 }
