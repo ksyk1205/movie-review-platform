@@ -49,11 +49,25 @@ public class ReviewAcceptanceTest extends AcceptanceTest {
     ReviewSteps.리뷰_등록_요청(movieId, rating, comment);
 
     //when
-
     ExtractableResponse<Response> 리뷰_조회_결과 = ReviewSteps.리뷰_조회_요청(movieId);
 
     //then
     assertThat(리뷰_조회_결과.jsonPath().getList("comment").get(0)).isEqualTo(comment);
+  }
+
+  @Test
+  @DisplayName("리뷰를 삭제할 수 있다.")
+  void 리뷰_삭제_테스트() {
+    //given
+    String comment = "나쁘지않아요.";
+    double rating = 3.0;
+    ExtractableResponse<Response> 리뷰_등록_결과 = ReviewSteps.리뷰_등록_요청(movieId, rating, comment);
+
+    //when
+    ExtractableResponse<Response> 리뷰_삭제_결과 = ReviewSteps.리뷰_삭제_요청(movieId, 리뷰_등록_결과.jsonPath().get("id"));
+
+    //then
+    assertThat(리뷰_삭제_결과.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
   }
 
 }
