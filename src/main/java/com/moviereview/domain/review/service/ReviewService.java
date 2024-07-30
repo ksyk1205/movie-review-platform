@@ -30,7 +30,7 @@ public class ReviewService {
 
   public ReviewSearchResponse addReview(String movieId, String userId, ReviewCreateRequest request) {
     Movie movie = movieService.findById(movieId);
-    Review review = createReview(movie.getId(), userId, request);
+    Review review = createReview(movie.getId(), userId, request.rating(), request.comment());
     Review save = reviewRepository.save(review);
     return ReviewSearchResponse.from(save);
   }

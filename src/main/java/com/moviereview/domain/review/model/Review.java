@@ -28,12 +28,12 @@ public class Review extends BaseDocument {
     private LocalDateTime timestamp;
   }
 
-  public static Review createReview(String movieId, String userId, ReviewCreateRequest request) {
+  public static Review createReview(String movieId, String userId, Double rating, String comment) {
     return Review.builder()
         .userId(userId)
         .movieId(movieId)
-        .rating(request.rating())
-        .comment(request.comment())
+        .rating(rating)
+        .comment(comment)
         .build();
   }
 }

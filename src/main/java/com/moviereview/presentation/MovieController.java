@@ -65,7 +65,7 @@ public class MovieController {
 
   //TODO 사용자 정보 세팅 후 userId 변경
   @PostMapping("/{id}/reviews")
-  public ResponseEntity<ReviewSearchResponse> addReview(@PathVariable String id, @RequestBody ReviewCreateRequest reviewDto) {
+  public ResponseEntity<ReviewSearchResponse> addReview(@PathVariable String id, @Valid @RequestBody ReviewCreateRequest reviewDto) {
     return ResponseEntity.ok(reviewService.addReview(id, "user1", reviewDto));
   }
 
