@@ -70,7 +70,7 @@ public class MovieService {
     movieRepository.deleteById(id);
   }
 
-  private Movie findById(String id) {
+  public Movie findById(String id) {
     return movieRepository.findById(id).orElseThrow(
         () -> new BadRequestException(ErrorCode.BAD_REQUEST_EXCEPTION, "movie resource not found"));
   }

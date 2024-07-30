@@ -4,10 +4,14 @@ import com.moviereview.application.dto.MovieCreateRequest;
 import com.moviereview.application.dto.MovieCreateResponse;
 import com.moviereview.application.dto.MovieSearchResponse;
 import com.moviereview.application.dto.MovieUpdateRequest;
+import com.moviereview.application.dto.ReviewCreateRequest;
+import com.moviereview.application.dto.ReviewSearchResponse;
 import com.moviereview.domain.movie.service.MovieService;
+import com.moviereview.domain.review.service.ReviewService;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MovieController {
   private final MovieService movieService;
+  private final ReviewService reviewService;
 
   @GetMapping
   public ResponseEntity<List<MovieSearchResponse>> getList() {
@@ -56,6 +61,24 @@ public class MovieController {
   public ResponseEntity<Void> removeMovie(@PathVariable String id) {
     movieService.removeMovie(id);
     return ResponseEntity.noContent().build();
+  }
+
+  //TODO 사용자 정보 세팅 후 userId 변경
+  @PostMapping("/{id}/reviews")
+  public ResponseEntity<ReviewSearchResponse> addReview(@PathVariable String id, @Valid @RequestBody ReviewCreateRequest reviewDto) {
+    return ResponseEntity.ok(reviewService.addReview(id, "user1", reviewDto));
+  }
+
+  @GetMapping("/{id}/reviews")
+  public ResponseEntity<List<ReviewSearchResponse>> searchResponse(@PathVariable String id) {
+    return ResponseEntity.ok(reviewService.searchReview(id));
+  }
+
+  @DeleteMapping("/{id}/reviews/{reviewId}")
+  public ResponseEntity<Void> searchResponse(@PathVariable String id, @PathVariable String reviewId) {
+    reviewService.removeReview(id, reviewId);
+    return ResponseEntity.noContent().build();
+
   }
 
 }
